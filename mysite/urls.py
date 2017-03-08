@@ -16,10 +16,42 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
+from django.contrib.auth.models import User
 from django.contrib.auth.views import login, logout
+from rest_framework import routers, serializers, viewsets
+from myblog.models import Post
+
+# Serializers define the API representation.
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email')
+
+# ViewSets define the view behavior.
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class PostSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('title', 'text', 'author', 'categories', 'created_date', 'modified_date', 'published_date')
+
+class PostsViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'posts', PostsViewSet)
+
 urlpatterns = [
     url(r'^', include('myblog.urls')),
+    url(r'^api/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', login, {'template_name': 'login.html'}, name="login"),
     url(r'^logout/$', logout, {'next_page': '/'}, name="logout"),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
