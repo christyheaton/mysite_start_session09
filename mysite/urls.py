@@ -36,7 +36,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('title', 'text', 'author')
+        fields = ('title', 'text', 'author', 'categories', 'created_date', 'modified_date', 'published_date')
 
 class PostsViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -45,6 +45,7 @@ class PostsViewSet(viewsets.ModelViewSet):
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'posts', PostsViewSet)
 
 urlpatterns = [
     url(r'^', include('myblog.urls')),
