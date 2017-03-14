@@ -1,2 +1,4 @@
 *.db
 *.pyc
+django_pairprogramming/
+django-env/
