@@ -36,7 +36,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = ('title', 'text', 'author', 'categories', 'created_date', 'modified_date', 'published_date')
+        fields = ('title', 'text', 'author', 'created_date', 'modified_date', 'published_date')
 
 class PostsViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
